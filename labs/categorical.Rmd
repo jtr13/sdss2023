@@ -1,0 +1,232 @@
+---
+title: "categorical data -- SDSS workshop"
+output: html_document
+date: "2023-05-23"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Numeric data
+
+```{r}
+library(ade4)
+data("clementines")
+str(clementines)
+```
+
+## Categorical data
+
+```{r}
+library(fivethirtyeight)
+str(food_world_cup[,1:12])
+```
+
+## Warnings
+
+
+> - words are hard to work with!
+
+> - not a lot of options (esp. for 1 dimension): bar plot, Cleveland dot plot
+
+> - data cleaning takes more time
+
+> - main choices: *which* categories to plot, *order* of categories
+
+
+## Types of data
+
+
+> - nominal does not have a fixed category order
+
+> - ordinal does have a fixed category order
+
+> - ("real") discrete, small ## of possibilities
+
+> - Not always clearcut: nominal vs. ordinal, ordinal vs. discrete, etc.
+
+> - Sometimes numbers = nominal, not discrete
+
+
+## Ordinal data
+
+
+Sort in logical order of the categories (left to right)
+
+```{r}
+library(tidyverse)
+ggplot(food_world_cup, aes(knowledge)) +
+    geom_bar(fill = "cornflowerblue") +
+    ggtitle("Knowledge level of respondents") +
+    theme_bw(16) +
+    theme(panel.grid.major.x = element_blank())
+```
+
+
+## Ordinal data
+
+
+Sort in logical order of the categories (starting at bottom OR top)
+
+```{r}
+ggplot(food_world_cup, aes(knowledge)) +
+    geom_bar(fill = "cornflowerblue") +
+    coord_flip() +
+    ggtitle("Knowledge level of respondents") +
+    theme_bw(16) +
+    theme(panel.grid.major.x = element_blank())
+```
+
+## Nominal data
+
+
+Sort from highest to lowest count (left to right, or top to bottom)
+
+```{r}
+student <- read_csv("student_data.csv")
+## See "School Codes and Descriptions" in SSOL help menu
+
+ggplot(student, aes(fct_infreq(School))) +
+    geom_bar(fill = "cornflowerblue") +
+    ggtitle("Number of Intro Stats Students by School") +
+    xlab("") +
+    theme_bw(16) +
+    theme(panel.grid.major.x = element_blank())
+```
+
+## Nominal data
+
+
+... or top to bottom 
+```{r, fig.width=7.5}
+student$School <- fct_recode(student$School,
+                             `Barnard College`= "BC",
+                             `Columbia College` = "CC",
+                             `General Studies Post Bac` = "GN",
+                             `General Studies` = "GS",
+                             `School of Professional Studies` = "SP")
+
+
+ggplot(student, aes(fct_rev(fct_infreq(School)))) +
+  geom_bar(fill = "cornflowerblue") +
+  coord_flip() +
+  ggtitle("Number of Intro Stats Students by School") +
+  xlab("") +
+  theme_bw(14) +
+  theme(panel.grid.major.y = element_blank())
+```
+
+## Discrete data
+
+
+```{r}
+library(vcd)
+df <- data.frame(Saxony)
+ggplot(df, aes(x = nMales, y = Freq)) +
+  geom_col(color = "black", fill = "thistle") +
+  ggtitle("19c Saxony: # of males in families with 12 children") +
+  xlab("number of male children") +
+  theme_bw(14) +
+  theme(panel.grid.major.x = element_blank())
+```
+
+## Two geoms for bar charts
+
+
+> - Binned data (has a count column) `geom_col()`
+
+> - Unbinned data (no count column)  `geom_bar()`
+
+
+## `geom_col()`
+
+
+> - Requires an **x** and **y**
+
+> - Intended to be used with one **continuous** and one **discrete** variables but other combinations may also work
+
+## Look at the data
+
+
+```{r}
+#| echo: true
+df_binned <- data.frame(state = c("CA", "NY", "TX"),
+                        count = c(4, 3, 2))
+df_binned
+```
+
+## Bar chart with binned data
+
+
+```{r}
+ggplot(df_binned, aes(x = state, y = count)) + 
+  geom_col()
+```
+
+## `geom_bar()`
+
+
+> - Requires an **x** or **y**
+
+
+> - Intended to be used with one **discrete** variable
+
+
+## Look at the data
+
+
+```{r}
+df_unbinned <- data.frame(state = c("NY", "CA", "TX", "NY", "CA", "CA", "TX", "CA", "NY"))
+str(df_unbinned)
+```
+
+## Bar chart with unbinned data
+
+```{r}
+ggplot(df_unbinned, aes(x = state)) +
+  geom_bar()
+```
+
+
+# Cleveland dot plot
+
+
+## Cleveland dot plot
+
+
+```{r CDP, fig.height=7}
+## Cleveland Dot Plot theme
+world <- read_csv("countries2012.csv")
+africa <- world |>
+  filter(CONTINENT == "Africa")
+ggplot(africa, aes(x = GDP, y = fct_reorder(COUNTRY, GDP))) +
+  geom_point(color = "blue") +
+  ggtitle("Africa: GDP per capita, 2012") +
+  ylab("") +
+  theme_linedraw() ## works well for dotplots
+```
+
+
+## Cleveland dot plot with multiple dots
+
+
+Sorted by 1997 fatality rate
+
+```{r, fig.height=7}
+library(AER)
+data("USSeatBelts")
+belts <- USSeatBelts |>
+  filter(year %in% c(1983, 1997)) |>
+  select(state, year, fatalities)
+ 
+## `fct_reorder2` --> double sort: year, then fatalities
+ggplot(belts, aes(x = fatalities, y = fct_reorder2(state, year == 1997, fatalities,
+                                                   .desc = FALSE), color = year)) +
+  geom_point() +
+  ggtitle("# of fatalities per million traffic miles") +
+  ylab("") +
+  theme_linedraw()
+```
+
