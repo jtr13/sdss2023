@@ -1,0 +1,84 @@
+---
+title: "geom_histogram -- SDSS 2023 workshop"
+output: html_document
+date: "2023-05-23"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error = TRUE)
+```
+
+# HISTOGRAMS
+
+## Look at the data
+
+```{r}
+str(faithful)
+```
+
+## Basic histogram
+
+```{r}
+library(ggplot2)
+ggplot(faithful, aes(x = eruptions)) +
+  geom_histogram()
+```
+
+## Add color and fill
+
+```{r}
+ggplot(faithful, aes(x = eruptions)) +
+  geom_histogram(color = "blue", fill = "cornflowerblue")
+```
+
+## Vary the bin boundaries
+
+```{r}
+ggplot(faithful, aes(x = eruptions)) +
+  geom_histogram(breaks = seq(1.5, 5.5, .25),
+                 color = "blue", fill = "cornflowerblue")
+```
+
+## Density histogram
+
+```{r}
+ggplot(faithful, aes(x = eruptions)) +
+  geom_histogram(breaks = seq(1.5, 5.5, .25),
+                 color = "blue", fill = "cornflowerblue")
+```
+
+## Exercises
+
+### 1. Frequency histograms
+
+Choose one of the following datasets:
+
+`swiss` -- built-in base R: 47 rows, 6 variables
+
+```{r}
+str(swiss)
+```
+
+`movies` -- `ggplot2movies` package: 58788 rows, 24 variables
+
+```{r}
+# uncomment and run once:
+# install.packages("ggplot2movies")
+library(ggplot2movies)
+str(movies)
+```
+
+Draw histograms of individual variables. Experiment with changing the bin boundaries with `breaks =` or set the binwidth with `binwidth = `
+
+```{r}
+library(ggplot2)
+```
+
+### 2. Density histograms
+
+Chooose one variable and create a density histogram with `geom_histogram(aes(y = after_stat(density)))`
+
+```{r}
+
+```
+

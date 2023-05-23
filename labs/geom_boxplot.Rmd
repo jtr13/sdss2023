@@ -1,0 +1,57 @@
+---
+title: "geom_boxplot -- SDSS 2023 workshop"
+output: html_document
+date: "2023-05-23"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error = TRUE)
+```
+
+# BOXPLOTS
+
+## Single boxplot
+
+```{r}
+library(ggplot2)
+ggplot(mtcars, aes(x = mpg)) +
+  geom_boxplot() 
+```
+
+## Multiple boxplots
+
+Why doesn't this work?
+
+```{r}
+  ggplot(mtcars, aes(x = mpg, y = gear)) +
+    geom_boxplot() 
+```
+
+## Multiple boxplots
+
+This works!
+
+```{r}
+  ggplot(mtcars, aes(x = mpg, y = factor(gear))) +
+    geom_boxplot() 
+```
+
+## World data
+
+```{r}
+world <- read.csv("countries2012.csv")
+ggplot(world, aes(x = CONTINENT, y = TFR)) + 
+  geom_boxplot()
+```
+
+## Reorder by median
+
+```{r}
+world <- read.csv("countries2012.csv")
+ggplot(world, aes(x = reorder(CONTINENT, -TFR, median), y = TFR)) + 
+  geom_boxplot()
+```
+
+## EXERCISE
+
+Practice drawing boxplots with any of the datasets we've used so far -- `swiss`, "countries2012.csv", `ggplot2movies` or data of your own.

@@ -1,0 +1,64 @@
+---
+title: "geom_point -- SDSS 2023 workshop"
+output: html_document
+date: "2023-05-23"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error = TRUE)
+```
+
+# SCATTERPLOTS
+
+## mtcars
+
+```{r}
+library(tidyverse)
+ggplot(mtcars, aes(x = wt, y = mpg)) + 
+  geom_point()
+```
+
+## Scatterplot with color
+
+What's wrong?
+
+```{r}
+ggplot(mtcars, aes(x = wt, y = mpg, color = am)) + 
+  geom_point()
+```
+
+
+## Scatterplot with color
+
+
+```{r}
+ggplot(mtcars, aes(x = wt, y = mpg, color = factor(am))) + 
+  geom_point()
+```
+
+## Scatterplot with color
+
+Improved
+
+```{r}
+df <- mtcars
+df$am[df$am == 0] <- "automatic"
+df$am[df$am == 1] <- "manual"
+ggplot(df, aes(x = wt, y = mpg, color = am)) + 
+  geom_point()
+```
+
+## Scatterplot with color
+
+Improved (tidyverse version)
+
+```{r}
+mtcars |> 
+  mutate(am = fct_recode(factor(am), "automatic" = "0", "manual" = "1")) |>
+  ggplot(aes(x = wt, y = mpg, color = am)) + 
+  geom_point()
+```
+
+## EXERCISE
+
+Draw scatterplots of appropriate variables from "countries2012.csv". Color by continent.
