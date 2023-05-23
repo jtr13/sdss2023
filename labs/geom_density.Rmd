@@ -14,8 +14,9 @@ knitr::opts_chunk$set(echo = TRUE, error = TRUE)
 
 ```{r}
 library(ggplot2)
-ggplot(faithful, aes(x = eruptions)) +
-  geom_density()
+ggplot(faithful) +
+  geom_density(aes(x = eruptions))
+
 ```
 
 

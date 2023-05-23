@@ -1,0 +1,68 @@
+---
+title: "pivot_longer -- SDSS 2023 workshop"
+output: html_document
+date: "2023-05-23"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error = TRUE)
+```
+
+## pivot longer
+
+```{r}
+library(tidyr)
+df <- data.frame(id = paste0("car", 1:3),
+                   city = c(19, 20, 29),
+                   hwy = c(24, 30, 35))
+pivot_longer(df, cols = city:hwy)
+```
+
+
+## choose names for new columns
+
+```{r}
+pivot_longer(df, cols = city:hwy,
+             names_to = "roadtype", values_to = "mpg")
+```
+
+## if there is no id column
+
+```{r}
+  df <- data.frame(city = c(19, 20, 29),
+                   hwy = c(24, 30, 35))
+  df
+  pivot_longer(df, cols = city:hwy)
+```
+
+## turn the rownames into a column
+
+```{r}
+df$id <- rownames(df)
+df
+pivot_longer(df, cols = city:hwy)
+```
+
+## EXERCISES
+
+1. Pivot the `painters` dataset to longer form. It should look like this:
+
+```
+#> # A tibble: 216 × 4
+#>    School Name       Skill       Score
+#>    <fct>  <chr>      <chr>       <int>
+#>  1 A      Da Udine   Composition    10
+#>  2 A      Da Udine   Drawing         8
+#>  3 A      Da Udine   Colour         16
+#>  4 A      Da Udine   Expression      3
+```
+
+```{r}
+library(MASS)
+head(painters)
+```
+
+2. Create boxplots with the new data frame.
+
+
+
