@@ -15,3 +15,7 @@ This course is designed for those with some experience with **ggplot2**—the mo
 
 
 https://ww2.amstat.org/meetings/sdss/2023/shortcourses.cfm
+
+# Resources
+
+[Colors in R](http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf)
