@@ -1,0 +1,62 @@
+---
+title: "color -- SDSS 2023 workshop"
+output: html_document
+date: "2023-05-23"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error = TRUE)
+```
+
+## See RColorBrewer palettes
+
+```{r}
+library(RColorBrewer)
+display.brewer.all()
+display.brewer.all(type = "seq")
+display.brewer.all(type = "qual")
+display.brewer.all(type = "div")
+```
+
+## Discrete scales
+
+
+```{r}
+library(ggplot2)
+ggplot(mtcars, aes(x = wt, y = mpg, color = factor(gear))) +
+  geom_point()
+```
+
+
+```{r}
+ggplot(mtcars, aes(x = wt, y = mpg, color = factor(gear))) +
+  geom_point() +
+  scale_color_viridis_d()
+```
+
+```{r}
+ggplot(mtcars, aes(x = wt, y = mpg, color = factor(gear))) +
+  geom_point() +
+  scale_color_brewer(palette = "Dark2")
+```
+
+```{r}
+ggplot(mtcars, aes(x = wt, y = mpg, color = factor(gear))) +
+  geom_point() +
+  scale_color_manual(name = "gear", values = c("#ffe74c", "#ff5964", "#38618c"))
+```
+
+```{r}
+library(ggthemes)
+ggplot(mtcars, aes(x = wt, y = mpg, color = factor(gear))) +
+  geom_point() +
+  scale_color_colorblind()
+```
+
+```{r}
+library(ggthemes)
+ggplot(mtcars, aes(x = wt, y = mpg, color = factor(gear))) +
+  geom_point() +
+  scale_color_wsj() +
+  theme_classic()
+```
